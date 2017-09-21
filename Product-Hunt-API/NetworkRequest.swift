@@ -14,12 +14,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        let network1 = Network()
-        network1.networking { (phItems) in
-            for i in phItems {
-                print(i)
-            }
-        }
+       
     }
     
     override func didReceiveMemoryWarning() {
@@ -83,10 +78,7 @@ struct Producthunt: Decodable {
 }
 
 class Network {
-    var name = [String]()
-    
-    
-    func networking(completion: @escaping ([ProductHunt])-> Void) {
+    static func networking(completion: @escaping ([ProductHunt])-> Void) {
         
         let session = URLSession.shared
         var customizableParamters = "posts"
