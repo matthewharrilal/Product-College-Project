@@ -10,17 +10,23 @@ import UIKit
 
 class ViewController: UIViewController {
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         let network1 = Network()
-        print(network1.networking())
+        network1.networking { (phItems) in
+            for i in phItems {
+                print(i)
+            }
+        }
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
     
     
 }
@@ -65,7 +71,7 @@ extension ProductHunt: Decodable {
         let name = try container.decodeIfPresent(String.self, forKey: .name) ?? "The name of this product is not available"
         let tagline = try container.decodeIfPresent(String.self, forKey: .tagline) ?? "The tagline for this product is not available"
         let votesCount = try container.decodeIfPresent(Int.self, forKey: .votesCount) ?? Int("The number of votes for this product is not available")
-       let day = try container.decodeIfPresent(String.self, forKey: .day) ?? "The day this product was created on is not available"
+        let day = try container.decodeIfPresent(String.self, forKey: .day) ?? "The day this product was created on is not available"
         
         let imageUrl = try thumbnailContainer.decodeIfPresent(String.self, forKey: .imageURL)
         self.init(name: name, tagline: tagline, votesCount: votesCount, imageURL: imageUrl, day: day)
@@ -77,11 +83,14 @@ struct Producthunt: Decodable {
 }
 
 class Network {
+    var name = [String]()
     
     
-    func networking() {
+    func networking(completion: @escaping ([ProductHunt])-> Void) {
+        
         let session = URLSession.shared
         var customizableParamters = "posts"
+        let dg = DispatchGroup()
         var url = URL(string: "https://api.producthunt.com/v1/" + customizableParamters)
         
         let urlParams = ["search[featured]": "true",
@@ -96,15 +105,28 @@ class Network {
         // Formatting the network request with the neccesary headers by using the set value methods
         
         // And we had to structure the url request such as that in order to be able to use the formatting parameters function as well as desired protocols
-        
+        var posts = [ProductHunt]()
+        dg.enter()
         session.dataTask(with: getRequest) { (data, response, error) in
+            guard error == nil else{return}
             if let data = data {
                 let producthunt = try? JSONDecoder().decode(Producthunt.self, from: data)
+                guard let newPosts = producthunt?.posts else{return}
+                posts = newPosts
                 print(producthunt)
+                dg.leave()
+            } else {
+                dg.leave()
             }
             }.resume()
+        dg.notify(queue: .main, execute:
+            {
+                completion(posts)
+                
+        })
     }
 }
+
 
 // We are essentially giving the ability to implement parameters in the dictionary succesfully
 
@@ -140,5 +162,6 @@ extension Dictionary : URLQueryParameterStringConvertible {
     }
     
 }
+
 
 
