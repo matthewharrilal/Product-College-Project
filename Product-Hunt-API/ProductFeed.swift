@@ -35,7 +35,8 @@ class ProductHuntFeed: UITableViewController {
         let cell: tableCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! tableCell
         let product = posts1[indexPath.row]
         
-        cell.productNameLabel.text = product.name
+        cell.textLabel?.text = product.name
+        cell.detailTextLabel?.text = product.tagline
         return cell
     }
    
