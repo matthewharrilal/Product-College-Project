@@ -98,11 +98,14 @@ class Network {
     }
 }
 
+// We are essentially giving the ability to implement parameters in the dictionary succesfully
+
 extension URL {
     func appendingQueryParameters(_ parametersDictionary : Dictionary<String, String>) -> URL {
         let URLString : String = String(format: "%@?%@", self.absoluteString, parametersDictionary.queryParameters)
         return URL(string: URLString)!
     }
+    // This is formatting the query parameters with an ascii table reference therefore we can be returned a json file
 }
 
 protocol URLQueryParameterStringConvertible {
@@ -129,4 +132,5 @@ extension Dictionary : URLQueryParameterStringConvertible {
     }
     
 }
+
 
