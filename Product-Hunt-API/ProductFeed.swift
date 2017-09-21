@@ -31,6 +31,8 @@ class ProductHuntFeed: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return posts1.count
     }
+    
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: tableCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! tableCell
         let product = posts1[indexPath.row]
@@ -38,14 +40,23 @@ class ProductHuntFeed: UITableViewController {
         cell.textLabel?.text = product.name
         cell.detailTextLabel?.text = product.tagline
         if let profileImageURL = product.imageURL {
-            let url = URL(string: profileImageURL)
-            URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
-                if error != nil {
-                    print(error)
-                    return
-                }
-                cell.imageView?.image = UIImage(data: data!)
-            }).resume()
+            DispatchQueue.main.async {
+                  cell.imageView?.loadImageUsingCacheWithUrlString(urlString: profileImageURL)
+            }
+            
+//            let url = URL(string: profileImageURL)
+//            URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
+//                if error != nil {
+//                    print(error)
+//                    return
+//                }
+//                DispatchQueue.main.async {
+//                    cell.imageView?.image = UIImage(data: data!)
+//
+////                    self.tableView.reloadData()
+////                    print(response)
+//                }
+//            }).resume()
         }
         return cell
     }
