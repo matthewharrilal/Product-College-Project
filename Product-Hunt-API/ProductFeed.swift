@@ -32,8 +32,10 @@ class ProductHuntFeed: UITableViewController {
         return posts1.count
     }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-       
+        let cell: tableCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! tableCell
+        let product = posts1[indexPath.row]
+        
+        cell.productNameLabel.text = product.name
         return cell
     }
    
