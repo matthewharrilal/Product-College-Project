@@ -87,7 +87,9 @@ class Network {
         getRequest.setValue("application/json", forHTTPHeaderField: "Accept")
         getRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
         getRequest.setValue("api.producthunt.com", forHTTPHeaderField: "Host")
+        // Formatting the network request with the neccesary headers by using the set value methods
         
+        // And we had to structure the url request such as that in order to be able to use the formatting parameters function as well as desired protocols 
         
         session.dataTask(with: getRequest) { (data, response, error) in
             if let data = data {
