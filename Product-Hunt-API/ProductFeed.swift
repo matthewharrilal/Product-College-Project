@@ -37,6 +37,16 @@ class ProductHuntFeed: UITableViewController {
         
         cell.textLabel?.text = product.name
         cell.detailTextLabel?.text = product.tagline
+        if let profileImageURL = product.imageURL {
+            let url = URL(string: profileImageURL)
+            URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
+                if error != nil {
+                    print(error)
+                    return
+                }
+                cell.imageView?.image = UIImage(data: data!)
+            }).resume()
+        }
         return cell
     }
    
