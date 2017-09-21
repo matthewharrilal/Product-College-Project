@@ -31,12 +31,14 @@ struct ProductHunt {
     let tagline: String?
     let votesCount: Int?
     let imageURL: String?
+    let day: String?
     // What is the point of initalizing the data?
-    init(name: String?, tagline: String?, votesCount: Int?, imageURL: String?) {
+    init(name: String?, tagline: String?, votesCount: Int?, imageURL: String?, day: String?) {
         self.name = name
         self.tagline = tagline
         self.votesCount = votesCount
         self.imageURL = imageURL
+        self.day = day
     }
 }
 
@@ -47,6 +49,7 @@ extension ProductHunt: Decodable {
         case name
         case tagline
         case votesCount = "votes_count"
+        case day
         case thumbnail
     }
     
@@ -62,9 +65,10 @@ extension ProductHunt: Decodable {
         let name = try container.decodeIfPresent(String.self, forKey: .name) ?? "The name of this product is not available"
         let tagline = try container.decodeIfPresent(String.self, forKey: .tagline) ?? "The tagline for this product is not available"
         let votesCount = try container.decodeIfPresent(Int.self, forKey: .votesCount) ?? Int("The number of votes for this product is not available")
+       let day = try container.decodeIfPresent(String.self, forKey: .day) ?? "The day this product was created on is not available"
         
         let imageUrl = try thumbnailContainer.decodeIfPresent(String.self, forKey: .imageURL)
-        self.init(name: name, tagline: tagline, votesCount: votesCount, imageURL: imageUrl)
+        self.init(name: name, tagline: tagline, votesCount: votesCount, imageURL: imageUrl, day: day)
     }
 }
 
@@ -77,7 +81,9 @@ class Network {
     
     func networking() {
         let session = URLSession.shared
-        var url = URL(string: "https://api.producthunt.com/v1/posts")
+        var customizableParamters = "posts"
+        var url = URL(string: "https://api.producthunt.com/v1/" + customizableParamters)
+        
         let urlParams = ["search[featured]": "true",
                          "scope": "public"]
         url = url?.appendingQueryParameters(urlParams)
@@ -89,7 +95,7 @@ class Network {
         getRequest.setValue("api.producthunt.com", forHTTPHeaderField: "Host")
         // Formatting the network request with the neccesary headers by using the set value methods
         
-        // And we had to structure the url request such as that in order to be able to use the formatting parameters function as well as desired protocols 
+        // And we had to structure the url request such as that in order to be able to use the formatting parameters function as well as desired protocols
         
         session.dataTask(with: getRequest) { (data, response, error) in
             if let data = data {
