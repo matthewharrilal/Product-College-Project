@@ -28,64 +28,63 @@ class ViewController: UIViewController {
 
 struct ProductHunt {
     // Modeling the properties we want back from the JSON Data
+    var body: String?
     var name: String?
     var tagline: String?
-    var votesCount: Int?
+    var votes: Int?
     var imageURL: String?
     var day: String?
-    var body: String?
-    var createdAt: String?
+    
     // What is the point of initalizing the data?
-    init(name: String?, tagline: String?, votesCount: Int?, imageURL: String?, day: String?, body: String?, createdAt: String?) {
+    init(body: String?,name: String?, tagline: String?, votesCount: Int?, imageURL: String?, day: String?) {
+        self.body = body
         self.name = name
         self.tagline = tagline
-        self.votesCount = votesCount
+        self.votes = votesCount
         self.imageURL = imageURL
         self.day = day
-        self.body = body
-        self.createdAt = createdAt
+        
+       
     }
 }
 
 extension ProductHunt: Decodable {
     // Creating  our case statements to iterate over the data in the JSON File
+    
     enum additionalKeys: String, CodingKey {
         // Creating case statements that are nested within the posts list embedded with dictionaries
+        case body
+        case post
         case name
         case tagline
-        case votesCount = "votes_count"
+        case votes = "votes"
         case day
         case thumbnail
     }
     
-    enum comments: String, CodingKey {
-        case body
-        case createdAt = "created_at"
+    enum Posts: String, CodingKey {
+        case post
     }
-    
-    enum thumbnailImage: String, CodingKey {
-        // Creating a case statement for the image url nested in within the thumbnail dictionary
+   
+    enum  thubnailImage: String, CodingKey {
         case imageURL = "image_url"
     }
-    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: additionalKeys.self)
-        let commentsContainer = try decoder.container(keyedBy: comments.self)
-        let body = try commentsContainer.decodeIfPresent(String.self, forKey: .body) ?? "There are no comments for this product"
-        let createdAt = try commentsContainer.decodeIfPresent(String.self, forKey: .createdAt) ?? "The date of creating for these comments is unavailable"
-        let thumbnailContainer = try container.nestedContainer(keyedBy: thumbnailImage.self, forKey: .thumbnail )
-        let name = try container.decodeIfPresent(String.self, forKey: .name) ?? "The name of this product is not available"
-        let tagline = try container.decodeIfPresent(String.self, forKey: .tagline) ?? "The tagline for this product is not available"
-        let votesCount = try container.decodeIfPresent(Int.self, forKey: .votesCount) ?? Int("The number of votes for this product is not available")
-        let day = try container.decodeIfPresent(String.self, forKey: .day) ?? "The day this product was created on is not available"
-        
-        let imageUrl = try thumbnailContainer.decodeIfPresent(String.self, forKey: .imageURL)
-        self.init(name: name, tagline: tagline, votesCount: votesCount, imageURL: imageUrl, day: day, body: body, createdAt: createdAt)
+        let body = try container.decodeIfPresent(String.self, forKey: .body) ?? "The comments for this porduct are nil"
+        let votes = try container.decodeIfPresent(Int.self, forKey: .votes) ?? 0
+        let postContainer = try container.nestedContainer(keyedBy: additionalKeys.self, forKey: .post)
+        let name = try postContainer.decodeIfPresent(String.self, forKey: .name) ?? "Sorry no name for the product"
+        let tagline = try postContainer.decodeIfPresent(String.self, forKey: .tagline) ?? "Sorry no tagline"
+        let day = try postContainer.decodeIfPresent(String.self, forKey: .day) ?? "The day is not here"
+//        let thubnailContainer = try postContainer.nestedContainer(keyedBy: thubnailImage.self, forKey: .thumbnail)
+//        let imageURL = try thubnailContainer.decodeIfPresent(String.self, forKey: .imageURL) ?? "Sorry no image"
+        self.init(body: body, name: name, tagline: tagline, votesCount: votes, imageURL: "image", day: day)
     }
 }
 
 struct Producthunt: Decodable {
-    let posts: [ProductHunt]
+    let comments: [ProductHunt]
 }
 
 struct CommentsHunt: Decodable {
@@ -97,20 +96,18 @@ class Network {
         let session = URLSession.shared
         var customizableParamters = "posts"
         let dg = DispatchGroup()
-        var url = URL(string: "https://api.producthunt.com/v1/posts")
-        var commentsURL = URL(string: "https://api.producthunt.com/v1/comments")
+        var url = URL(string: "https://api.producthunt.com/v1/comments")
+      
+        let date = Date()
+//        guard let currentDate = date else {
+//            return
+//        }
         
         let urlParams = ["search[featured]": "true",
-                         "scope": "public"]
+                         "scope": "public",
+                         "created_at": String(describing: date)]
         url = url?.appendingQueryParameters(urlParams)
-        commentsURL = commentsURL?.appendingQueryParameters(urlParams)
-         var commentsRequest = URLRequest(url: commentsURL!)
-        commentsRequest.httpMethod = "GET"
-        commentsRequest.setValue("Bearer affc40d00605f0df370dbd473350db649b0c88a5747a2474736d81309c7d5f7b ", forHTTPHeaderField: "Authorization")
-        commentsRequest.setValue("application/json", forHTTPHeaderField: "Accept")
-        commentsRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        commentsRequest.setValue("api.producthunt.com", forHTTPHeaderField: "Host")
-        
+       
         var getRequest = URLRequest(url: url!)
         getRequest.httpMethod = "GET"
         getRequest.setValue("Bearer affc40d00605f0df370dbd473350db649b0c88a5747a2474736d81309c7d5f7b ", forHTTPHeaderField: "Authorization")
@@ -121,19 +118,19 @@ class Network {
         
         // And we had to structure the url request such as that in order to be able to use the formatting parameters function as well as desired protocols
         var posts = [ProductHunt]()
-        var postsz = [ProductHunt]()
+        
         dg.enter()
         session.dataTask(with: getRequest) { (data, response, error) in
             guard error == nil else{return}
             if let data = data {
                 let producthunt = try? JSONDecoder().decode(Producthunt.self, from: data)
-                let commentsHunt = try? JSONDecoder().decode(CommentsHunt.self, from: data)
-                guard let newPosts = producthunt?.posts else{return}
-                guard let newPosts1 = commentsHunt?.comments else{return}
-                postsz = newPosts1
+                
+                guard let newPosts = producthunt?.comments else{return}
+              
                 posts = newPosts
-                print(producthunt)
-                print(commentsHunt)
+                //print(producthunt)
+                print(urlParams["created_at"])
+               
                 dg.leave()
             } else {
                 dg.leave()

@@ -10,45 +10,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Product-Hunt-API/NetworkRequest.swift"
-            timestampString = "527738222.911321"
+            timestampString = "527748759.261746"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "126"
-            endingLineNumber = "126"
-            landmarkName = "networking(completion:)"
+            startingLineNumber = "73"
+            endingLineNumber = "73"
+            landmarkName = "init(from:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "static Product_Hunt_API.Network.networking(completion: (Swift.Array&lt;Product_Hunt_API.ProductHunt&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "Product-Hunt-API"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewharrilal/Desktop/Product-Hunt-API/Product-Hunt-API/Product-Hunt-API/NetworkRequest.swift"
-                  timestampString = "527738222.924696"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "126"
-                  endingLineNumber = "126"
-                  offsetFromSymbolStart = "2991">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Foundation.Data&gt;, Swift.Optional&lt;__ObjC.URLResponse&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in static Product_Hunt_API.Network.networking(completion: (Swift.Array&lt;Product_Hunt_API.ProductHunt&gt;) -&gt; ()) -&gt; ()"
-                  moduleName = "Product-Hunt-API"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/matthewharrilal/Desktop/Product-Hunt-API/Product-Hunt-API/Product-Hunt-API/NetworkRequest.swift"
-                  timestampString = "527738222.927705"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "124"
-                  endingLineNumber = "124"
-                  offsetFromSymbolStart = "53">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -58,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Product-Hunt-API/NetworkRequest.swift"
-            timestampString = "527738222.9116"
+            timestampString = "527748759.26208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "129"
-            endingLineNumber = "129"
-            landmarkName = "networking(completion:)"
+            startingLineNumber = "82"
+            endingLineNumber = "82"
+            landmarkName = "init(from:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
