@@ -35,10 +35,10 @@ struct ProductHunt {
     var imageURL: String?
     var day: String?
     var url:String?
-    var postID: Int?
+    var postID: Int
     
     // What is the point of initalizing the data?
-    init(body: String?,name: String?, tagline: String?, votesCount: Int?, imageURL: String?, day: String?, url:String?, postID: Int?) {
+    init(body: String?,name: String?, tagline: String?, votesCount: Int, imageURL: String?, day: String?, url:String?, postID: Int) {
         self.body = body
         self.name = name
         self.tagline = tagline
@@ -76,7 +76,7 @@ extension ProductHunt: Decodable {
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: additionalKeys.self)
         let body = try container.decodeIfPresent(String.self, forKey: .body)
-        let postID = try container.decodeIfPresent(Int.self, forKey: .postID)
+        let postID = try container.decodeIfPresent(Int.self, forKey: .postID) ?? 0
         let votes = try container.decodeIfPresent(Int.self, forKey: .votes)
         let postContainer = try container.nestedContainer(keyedBy: additionalKeys.self, forKey: .post)
         let name = try postContainer.decodeIfPresent(String.self, forKey: .name)
@@ -86,10 +86,10 @@ extension ProductHunt: Decodable {
          let thumbnailContainer = try? postContainer.nestedContainer(keyedBy: thubnailImage.self, forKey: .thumbnail)
        if let _ = thumbnailContainer {
         let imageURL = try thumbnailContainer?.decodeIfPresent(String.self, forKey: .imageURL)
-       self.init(body: body, name: name, tagline: tagline, votesCount: votes, imageURL: imageURL, day: day, url: url, postID: postID)
+        self.init(body: body, name: name, tagline: tagline, votesCount: votes!, imageURL: imageURL, day: day, url: url, postID: postID)
         return
         }
-        self.init(body: body, name: name, tagline: tagline, votesCount: votes, imageURL: "image", day: day, url: url, postID: postID)
+        self.init(body: body, name: name, tagline: tagline, votesCount: votes!, imageURL: "image", day: day, url: url, postID: postID)
     }
 }
 
