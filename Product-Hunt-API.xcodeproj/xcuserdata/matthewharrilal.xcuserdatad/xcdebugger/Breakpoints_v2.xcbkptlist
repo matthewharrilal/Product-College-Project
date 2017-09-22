@@ -10,7 +10,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Product-Hunt-API/NetworkRequest.swift"
-            timestampString = "527748759.261746"
+            timestampString = "527750766.194475"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "73"
@@ -26,13 +26,45 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Product-Hunt-API/NetworkRequest.swift"
-            timestampString = "527748759.26208"
+            timestampString = "527750766.194831"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "82"
             endingLineNumber = "82"
             landmarkName = "init(from:)"
             landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Product_Hunt_API.ProductHunt.init(from: Swift.Decoder) throws -&gt; Product_Hunt_API.ProductHunt"
+                  moduleName = "Product-Hunt-API"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/matthewharrilal/Desktop/Product-Hunt-API/Product-Hunt-API/Product-Hunt-API/NetworkRequest.swift"
+                  timestampString = "527750766.342673"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "82"
+                  endingLineNumber = "82"
+                  offsetFromSymbolStart = "2824">
+               </Location>
+               <Location
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "implicit closure #4 : @autoclosure () throws -&gt; Swift.String in Product_Hunt_API.ProductHunt.init(from: Swift.Decoder) throws -&gt; Product_Hunt_API.ProductHunt"
+                  moduleName = "Product-Hunt-API"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/matthewharrilal/Desktop/Product-Hunt-API/Product-Hunt-API/Product-Hunt-API/NetworkRequest.swift"
+                  timestampString = "527750766.344683"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "82"
+                  endingLineNumber = "82"
+                  offsetFromSymbolStart = "4">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

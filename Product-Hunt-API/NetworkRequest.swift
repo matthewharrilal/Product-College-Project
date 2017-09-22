@@ -74,11 +74,15 @@ extension ProductHunt: Decodable {
         let body = try container.decodeIfPresent(String.self, forKey: .body) ?? "The comments for this porduct are nil"
         let votes = try container.decodeIfPresent(Int.self, forKey: .votes) ?? 0
         let postContainer = try container.nestedContainer(keyedBy: additionalKeys.self, forKey: .post)
-        let name = try postContainer.decodeIfPresent(String.self, forKey: .name) ?? "Sorry no name for the product"
-        let tagline = try postContainer.decodeIfPresent(String.self, forKey: .tagline) ?? "Sorry no tagline"
+        let name = try postContainer.decodeIfPresent(String.self, forKey: .name)
+        let tagline = try postContainer.decodeIfPresent(String.self, forKey: .tagline)
         let day = try postContainer.decodeIfPresent(String.self, forKey: .day) ?? "The day is not here"
-//        let thubnailContainer = try postContainer.nestedContainer(keyedBy: thubnailImage.self, forKey: .thumbnail)
-//        let imageURL = try thubnailContainer.decodeIfPresent(String.self, forKey: .imageURL) ?? "Sorry no image"
+         let thumbnailContainer = try? postContainer.nestedContainer(keyedBy: thubnailImage.self, forKey: .thumbnail)
+       if let _ = thumbnailContainer {
+        let imageURL = try thumbnailContainer?.decodeIfPresent(String.self, forKey: .imageURL) ?? "No Image"
+        self.init(body: body, name: name, tagline: tagline, votesCount: votes, imageURL: imageURL, day: day)
+        return
+        }
         self.init(body: body, name: name, tagline: tagline, votesCount: votes, imageURL: "image", day: day)
     }
 }
@@ -128,7 +132,7 @@ class Network {
                 guard let newPosts = producthunt?.comments else{return}
               
                 posts = newPosts
-                //print(producthunt)
+                print(producthunt)
                 print(urlParams["created_at"])
                
                 dg.leave()

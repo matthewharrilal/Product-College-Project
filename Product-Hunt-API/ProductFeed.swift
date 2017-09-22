@@ -49,8 +49,10 @@ class ProductHuntFeed: UITableViewController {
         let cell: tableCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! tableCell
         let product = posts1[indexPath.row]
         
-        cell.textLabel?.text = product.name
-        cell.detailTextLabel?.text = product.tagline
+        if product.name != nil {
+            cell.textLabel?.text = product.name
+            cell.detailTextLabel?.text = product.tagline
+        }
         if let profileImageURL = product.imageURL {
             
    
