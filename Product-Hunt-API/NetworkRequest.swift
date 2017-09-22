@@ -109,7 +109,8 @@ class Network {
         
         let urlParams = ["search[featured]": "true",
                          "scope": "public",
-                         "created_at": String(describing: date)]
+                         "created_at": String(describing: date),
+                         "per_page": "20"]
         url = url?.appendingQueryParameters(urlParams)
        
         var getRequest = URLRequest(url: url!)
