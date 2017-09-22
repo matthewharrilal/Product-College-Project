@@ -44,20 +44,43 @@ class ProductHuntFeed: UITableViewController {
         }
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let currentProduct = posts1[indexPath.row]
+        openURL(url: currentProduct.url)
+        
+    }
+    
+    func openURL(url: String!) {
+        if let url = URL(string: url) {
+            UIApplication.shared.open(url as URL, options: [:], completionHandler: nil)
+        }
+        
+    }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell: tableCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! tableCell
         let product = posts1[indexPath.row]
-        
+        print(product)
+        print(posts1[indexPath.row])
         if product.name != nil {
             cell.textLabel?.text = product.name
             cell.detailTextLabel?.text = product.tagline
         }
+        if product.imageURL == "image"
+        {
+            DispatchQueue.main.async {
+                
+                cell.imageView?.image = UIImage(named: "image.jpg")
+            }
+        }
         if let profileImageURL = product.imageURL {
             
-   
-            DispatchQueue.main.async {
-                  cell.imageView?.loadImageUsingCacheWithUrlString(urlString: profileImageURL)
+            if product.imageURL != "image"
+            {
+                DispatchQueue.main.async {
+                    
+                      cell.imageView?.loadImageUsingCacheWithUrlString(urlString: profileImageURL)
+                }
             }
            
             
@@ -76,6 +99,7 @@ class ProductHuntFeed: UITableViewController {
 //                }
 //            }).resume()
         }
+       
         //self.tableView.reloadData()
         return cell
     }

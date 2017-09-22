@@ -41,6 +41,7 @@
 /* Begin PBXFileReference section */
 		1C294CCC1F746D5C001C7627 /* Comments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comments.swift; sourceTree = "<group>"; };
 		1C294CCE1F746FD7001C7627 /* CommentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsCell.swift; sourceTree = "<group>"; };
+		1C2C914A1F74DB6D00858B6D /* image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image.jpg; sourceTree = "<group>"; };
 		1C36E3D51F737D2D0025BBAB /* Product-Hunt-API.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Product-Hunt-API.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C36E3D81F737D2D0025BBAB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1C36E3DA1F737D2D0025BBAB /* NetworkRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRequest.swift; sourceTree = "<group>"; };
@@ -144,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				1C588B521F74555800D78AB5 /* Extensions.swift */,
+				1C2C914A1F74DB6D00858B6D /* image.jpg */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";

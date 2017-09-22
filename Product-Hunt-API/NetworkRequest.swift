@@ -34,15 +34,17 @@ struct ProductHunt {
     var votes: Int?
     var imageURL: String?
     var day: String?
+    var url:String?
     
     // What is the point of initalizing the data?
-    init(body: String?,name: String?, tagline: String?, votesCount: Int?, imageURL: String?, day: String?) {
+    init(body: String?,name: String?, tagline: String?, votesCount: Int?, imageURL: String?, day: String?, url:String?) {
         self.body = body
         self.name = name
         self.tagline = tagline
         self.votes = votesCount
         self.imageURL = imageURL
         self.day = day
+        self.url = url
         
        
     }
@@ -60,6 +62,7 @@ extension ProductHunt: Decodable {
         case votes = "votes"
         case day
         case thumbnail
+        case url
     }
     
     enum Posts: String, CodingKey {
@@ -75,15 +78,16 @@ extension ProductHunt: Decodable {
         let votes = try container.decodeIfPresent(Int.self, forKey: .votes) ?? 0
         let postContainer = try container.nestedContainer(keyedBy: additionalKeys.self, forKey: .post)
         let name = try postContainer.decodeIfPresent(String.self, forKey: .name)
+        let url = try container.decodeIfPresent(String.self, forKey: .url) ?? "NO COMMENTS AVAILABLE"
         let tagline = try postContainer.decodeIfPresent(String.self, forKey: .tagline)
         let day = try postContainer.decodeIfPresent(String.self, forKey: .day) ?? "The day is not here"
          let thumbnailContainer = try? postContainer.nestedContainer(keyedBy: thubnailImage.self, forKey: .thumbnail)
        if let _ = thumbnailContainer {
         let imageURL = try thumbnailContainer?.decodeIfPresent(String.self, forKey: .imageURL) ?? "No Image"
-        self.init(body: body, name: name, tagline: tagline, votesCount: votes, imageURL: imageURL, day: day)
+        self.init(body: body, name: name, tagline: tagline, votesCount: votes, imageURL: imageURL, day: day, url:url)
         return
         }
-        self.init(body: body, name: name, tagline: tagline, votesCount: votes, imageURL: "image", day: day)
+        self.init(body: body, name: name, tagline: tagline, votesCount: votes, imageURL: "image", day: day, url:url)
     }
 }
 

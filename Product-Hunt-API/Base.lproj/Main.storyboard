@@ -66,9 +66,6 @@
                                         </label>
                                     </subviews>
                                 </tableViewCellContentView>
-                                <connections>
-                                    <segue destination="Abt-N3-cC9" kind="show" identifier="toComments" id="HbP-T1-NZZ"/>
-                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
