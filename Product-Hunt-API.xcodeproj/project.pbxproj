@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1C294CCD1F746D5C001C7627 /* Comments.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C294CCC1F746D5C001C7627 /* Comments.swift */; };
-		1C294CCF1F746FD7001C7627 /* CommentsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C294CCE1F746FD7001C7627 /* CommentsCell.swift */; };
 		1C36E3D91F737D2D0025BBAB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C36E3D81F737D2D0025BBAB /* AppDelegate.swift */; };
 		1C36E3DB1F737D2D0025BBAB /* NetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C36E3DA1F737D2D0025BBAB /* NetworkRequest.swift */; };
 		1C36E3DE1F737D2D0025BBAB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C36E3DC1F737D2D0025BBAB /* Main.storyboard */; };
@@ -39,8 +37,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		1C294CCC1F746D5C001C7627 /* Comments.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comments.swift; sourceTree = "<group>"; };
-		1C294CCE1F746FD7001C7627 /* CommentsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentsCell.swift; sourceTree = "<group>"; };
 		1C2C914A1F74DB6D00858B6D /* image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image.jpg; sourceTree = "<group>"; };
 		1C36E3D51F737D2D0025BBAB /* Product-Hunt-API.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Product-Hunt-API.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C36E3D81F737D2D0025BBAB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -117,8 +113,6 @@
 				1C36E3E41F737D2D0025BBAB /* Info.plist */,
 				1C36E4061F741A420025BBAB /* ProductFeed.swift */,
 				1C36E4081F743BB00025BBAB /* TableViewCell.swift */,
-				1C294CCC1F746D5C001C7627 /* Comments.swift */,
-				1C294CCE1F746FD7001C7627 /* CommentsCell.swift */,
 			);
 			path = "Product-Hunt-API";
 			sourceTree = "<group>";
@@ -289,8 +283,6 @@
 				1C36E4091F743BB00025BBAB /* TableViewCell.swift in Sources */,
 				1C36E3DB1F737D2D0025BBAB /* NetworkRequest.swift in Sources */,
 				1C36E3D91F737D2D0025BBAB /* AppDelegate.swift in Sources */,
-				1C294CCD1F746D5C001C7627 /* Comments.swift in Sources */,
-				1C294CCF1F746FD7001C7627 /* CommentsCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

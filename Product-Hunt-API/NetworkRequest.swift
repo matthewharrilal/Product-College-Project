@@ -35,9 +35,10 @@ struct ProductHunt {
     var imageURL: String?
     var day: String?
     var url:String?
+    var postID: Int?
     
     // What is the point of initalizing the data?
-    init(body: String?,name: String?, tagline: String?, votesCount: Int?, imageURL: String?, day: String?, url:String?) {
+    init(body: String?,name: String?, tagline: String?, votesCount: Int?, imageURL: String?, day: String?, url:String?, postID: Int?) {
         self.body = body
         self.name = name
         self.tagline = tagline
@@ -45,8 +46,7 @@ struct ProductHunt {
         self.imageURL = imageURL
         self.day = day
         self.url = url
-        
-       
+        self.postID = postID
     }
 }
 
@@ -63,6 +63,7 @@ extension ProductHunt: Decodable {
         case day
         case thumbnail
         case url
+        case postID = "post_id"
     }
     
     enum Posts: String, CodingKey {
@@ -74,20 +75,21 @@ extension ProductHunt: Decodable {
     }
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: additionalKeys.self)
-        let body = try container.decodeIfPresent(String.self, forKey: .body) ?? "The comments for this porduct are nil"
-        let votes = try container.decodeIfPresent(Int.self, forKey: .votes) ?? 0
+        let body = try container.decodeIfPresent(String.self, forKey: .body)
+        let postID = try container.decodeIfPresent(Int.self, forKey: .postID)
+        let votes = try container.decodeIfPresent(Int.self, forKey: .votes)
         let postContainer = try container.nestedContainer(keyedBy: additionalKeys.self, forKey: .post)
         let name = try postContainer.decodeIfPresent(String.self, forKey: .name)
-        let url = try container.decodeIfPresent(String.self, forKey: .url) ?? "NO COMMENTS AVAILABLE"
+        let url = try container.decodeIfPresent(String.self, forKey: .url)
         let tagline = try postContainer.decodeIfPresent(String.self, forKey: .tagline)
-        let day = try postContainer.decodeIfPresent(String.self, forKey: .day) ?? "The day is not here"
+        let day = try postContainer.decodeIfPresent(String.self, forKey: .day)
          let thumbnailContainer = try? postContainer.nestedContainer(keyedBy: thubnailImage.self, forKey: .thumbnail)
        if let _ = thumbnailContainer {
-        let imageURL = try thumbnailContainer?.decodeIfPresent(String.self, forKey: .imageURL) ?? "No Image"
-        self.init(body: body, name: name, tagline: tagline, votesCount: votes, imageURL: imageURL, day: day, url:url)
+        let imageURL = try thumbnailContainer?.decodeIfPresent(String.self, forKey: .imageURL)
+       self.init(body: body, name: name, tagline: tagline, votesCount: votes, imageURL: imageURL, day: day, url: url, postID: postID)
         return
         }
-        self.init(body: body, name: name, tagline: tagline, votesCount: votes, imageURL: "image", day: day, url:url)
+        self.init(body: body, name: name, tagline: tagline, votesCount: votes, imageURL: "image", day: day, url: url, postID: postID)
     }
 }
 
@@ -137,9 +139,7 @@ class Network {
                 guard let newPosts = producthunt?.comments else{return}
               
                 posts = newPosts
-                print(producthunt)
-                print(urlParams["created_at"])
-               
+               // print(producthunt)
                 dg.leave()
             } else {
                 dg.leave()

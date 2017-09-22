@@ -27,22 +27,23 @@ class ProductHuntFeed: UITableViewController {
 //                print(post)
 //            }
 //        }
-        Network.networking { (gatheredPosts) in
-            self.posts1 = gatheredPosts
-            self.tableView.reloadData()
+        DispatchQueue.main.async {
+            Network.networking { (gatheredPosts) in
+                for comment in self.posts1 {
+                    print(comment.body)
+                }
+                self.posts1 = gatheredPosts
+                self.tableView.reloadData()
+            }
         }
+      
        
     }
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return posts1.count
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toComments" {
-            var commentsViewController = segue.destination as? Comments
-            //products?.name = commentsViewController?.commentsLabel.text
-        }
-    }
+    
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let currentProduct = posts1[indexPath.row]
@@ -58,7 +59,7 @@ class ProductHuntFeed: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: tableCell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! tableCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let product = posts1[indexPath.row]
         print(product)
         print(posts1[indexPath.row])
@@ -66,22 +67,14 @@ class ProductHuntFeed: UITableViewController {
             cell.textLabel?.text = product.name
             cell.detailTextLabel?.text = product.tagline
         }
-        if product.imageURL == "image"
-        {
-            DispatchQueue.main.async {
-                
-                cell.imageView?.image = UIImage(named: "image.jpg")
-            }
-        }
         if let profileImageURL = product.imageURL {
             
-            if product.imageURL != "image"
-            {
                 DispatchQueue.main.async {
                     
                       cell.imageView?.loadImageUsingCacheWithUrlString(urlString: profileImageURL)
+                    self.tableView.reloadData()
                 }
-            }
+            
            
             
             
