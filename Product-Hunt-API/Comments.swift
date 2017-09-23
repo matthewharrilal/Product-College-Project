@@ -9,6 +9,6 @@
 import Foundation
 import UIKit
 
-class Comments: UIViewController {
+class Comments: UITableViewController {
     
 }

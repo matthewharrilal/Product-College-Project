@@ -67,7 +67,7 @@
                                     </subviews>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <segue destination="uBI-Wx-fDJ" kind="show" identifier="comments" id="duB-xX-LTP"/>
+                                    <segue destination="dnT-ZQ-A02" kind="show" identifier="toComments" id="vv8-DN-51S"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -82,32 +82,32 @@
             <point key="canvasLocation" x="4" y="-8.5457271364317844"/>
         </scene>
         <!--Comments-->
-        <scene sceneID="EnB-SF-fKC">
+        <scene sceneID="WUk-Lg-edv">
             <objects>
-                <viewController id="uBI-Wx-fDJ" customClass="Comments" customModule="Product_Hunt_API" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="iaa-qe-WaR">
+                <tableViewController id="dnT-ZQ-A02" customClass="Comments" customModule="Product_Hunt_API" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="kwG-Ff-3HF">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vlj-Hq-opS">
-                                <rect key="frame" x="99" y="617" width="46" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <segue destination="2Og-N0-MT7" kind="show" id="Low-UH-fy6"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <viewLayoutGuide key="safeArea" id="e4H-pj-NhP"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="5fe-8P-Xyj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="Bi7-eM-q9P">
+                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Bi7-eM-q9P" id="gwx-Ek-Kam">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="dnT-ZQ-A02" id="4wk-3I-Bbv"/>
+                            <outlet property="delegate" destination="dnT-ZQ-A02" id="FgY-Dh-bD2"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xyP-Rf-jHe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="865" y="-9"/>
+            <point key="canvasLocation" x="817" y="3"/>
         </scene>
     </scenes>
-    <inferredMetricsTieBreakers>
-        <segue reference="Low-UH-fy6"/>
-    </inferredMetricsTieBreakers>
 </document>

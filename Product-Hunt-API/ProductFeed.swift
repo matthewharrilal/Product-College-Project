@@ -99,8 +99,11 @@ class ProductHuntFeed: UITableViewController {
                 }
             }).resume()
         }
-        
-
+    }
+    func commentsRequest
+    
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
     }
     
@@ -127,23 +130,7 @@ class ProductHuntFeed: UITableViewController {
                 cell.imageView?.loadImageUsingCacheWithUrlString(urlString: profileImageURL)
                 
             }
-            
-            
-            
-            
-            //            let url = URL(string: profileImageURL)
-            //            URLSession.shared.dataTask(with: url!, completionHandler: { (data, response, error) in
-            //                if error != nil {
-            //                    print(error)
-            //                    return
-            //                }
-            //                DispatchQueue.main.async {
-            //                    cell.imageView?.image = UIImage(data: data!)
-            //
-            ////                    self.tableView.reloadData()
-            ////                    print(response)
-            //                }
-            //            }).resume()
+        
         }
         
         //self.tableView.reloadData()
