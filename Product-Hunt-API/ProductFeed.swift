@@ -9,30 +9,12 @@
 import Foundation
 import UIKit
 
-struct Products {
-    var body: String?
-    init(body: String?) {
-        self.body = body
-    }
-}
-extension Products: Decodable {
-    enum keys: String, CodingKey {
-        case body
-    }
-    init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: keys.self)
-        let body = try container.decodeIfPresent(String.self, forKey: .body) ?? "Sorry no comments"
-        self.init(body: body)
-    }
-}
-struct ProductHunt1: Decodable {
-    let comments: [Products]
-}
 
 class ProductHuntFeed: UITableViewController {
 //    var posts: String!
     
     var products: ProductHunt?
+    
     var posts1: [ProductHunt] = [] {
         didSet {
             self.tableView.reloadData()
@@ -49,6 +31,7 @@ class ProductHuntFeed: UITableViewController {
         //            }
         //        }
         DispatchQueue.main.async {
+
             Network.networking { (gatheredPosts) in
                
                 self.posts1 = gatheredPosts
@@ -63,49 +46,15 @@ class ProductHuntFeed: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //        let currentProduct = posts1[indexPath.row]
-        //        openURL(url: currentProduct.url)
-        Network.networking { (gatheredPosts) in
-            let indexPath = tableView.indexPathForSelectedRow!
-            let currentCell = tableView.cellForRow(at: indexPath)! as! UITableViewCell
-            let product = self.posts1[indexPath.row]
-            print(product)
-            let postId = product.postID
-           let session = URLSession.shared
-            var url = URL(string: "https://api.producthunt.com/v1/comments")
-            
-            let date = Date()
-            //        guard let currentDate = date else {
-            //            return
-            //        }
-            
-            let urlParams = ["search[post_id]": "\(postId)",
-                             "scope": "public",
-                             "created_at": String(describing: date),
-                             "per_page": "20"]
-            url = url?.appendingQueryParameters(urlParams)
-            
-            var getRequest = URLRequest(url: url!)
-            getRequest.httpMethod = "GET"
-            getRequest.setValue("Bearer affc40d00605f0df370dbd473350db649b0c88a5747a2474736d81309c7d5f7b ", forHTTPHeaderField: "Authorization")
-            getRequest.setValue("application/json", forHTTPHeaderField: "Accept")
-            getRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            getRequest.setValue("api.producthunt.com", forHTTPHeaderField: "Host")
-            
-            session.dataTask(with: getRequest, completionHandler: { (data, response, error) in
-                if let data = data {
-                    let productHunt = try? JSONDecoder().decode(ProductHunt1.self, from: data)
-                    print(productHunt)
-                }
-            }).resume()
-        }
+        let storyboard = UIStoryboard.init(name: "Main", bundle: nil)
+        let commentsTVC = storyboard.instantiateViewController(withIdentifier: "Comments") as! Comments
+        let post = posts1[indexPath.row]
+        commentsTVC.postID = post.postID
+        navigationController?.pushViewController(commentsTVC, animated: true)
     }
-    func commentsRequest
     
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-    }
+    
     
     func openURL(url: String!) {
         if let url = URL(string: url) {

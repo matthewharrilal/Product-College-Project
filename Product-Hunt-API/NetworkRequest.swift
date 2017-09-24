@@ -28,24 +28,21 @@ class ViewController: UIViewController {
 
 struct ProductHunt {
     // Modeling the properties we want back from the JSON Data
-    var body: String?
     var name: String?
     var tagline: String?
     var votes: Int?
     var imageURL: String?
     var day: String?
-    var url:String?
     var postID: Int
     
     // What is the point of initalizing the data?
-    init(body: String?,name: String?, tagline: String?, votesCount: Int, imageURL: String?, day: String?, url:String?, postID: Int) {
-        self.body = body
+    init(name: String?, tagline: String?, votesCount: Int?, imageURL: String?, day: String?, postID: Int) {
+    
         self.name = name
         self.tagline = tagline
         self.votes = votesCount
         self.imageURL = imageURL
         self.day = day
-        self.url = url
         self.postID = postID
     }
 }
@@ -55,44 +52,38 @@ extension ProductHunt: Decodable {
     
     enum additionalKeys: String, CodingKey {
         // Creating case statements that are nested within the posts list embedded with dictionaries
-        case body
-        case post
+    
+       
         case name
         case tagline
         case votes = "votes"
         case day
         case thumbnail
-        case url
-        case postID = "post_id"
+        case postID = "id"
     }
     
-    enum Posts: String, CodingKey {
-        case post
-    }
-   
-    enum  thubnailImage: String, CodingKey {
+    enum Thumbnail: String, CodingKey {
         case imageURL = "image_url"
     }
+   
+    
     init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: additionalKeys.self)
-        let body = try container.decodeIfPresent(String.self, forKey: .body)
-        let postID = try container.decodeIfPresent(Int.self, forKey: .postID) ?? 0
-        let votes = try container.decodeIfPresent(Int.self, forKey: .votes)
-        let postContainer = try container.nestedContainer(keyedBy: additionalKeys.self, forKey: .post)
-        let name = try postContainer.decodeIfPresent(String.self, forKey: .name)
-        let url = try container.decodeIfPresent(String.self, forKey: .url)
-        let tagline = try postContainer.decodeIfPresent(String.self, forKey: .tagline)
-        let day = try postContainer.decodeIfPresent(String.self, forKey: .day)
-         let thumbnailContainer = try? postContainer.nestedContainer(keyedBy: thubnailImage.self, forKey: .thumbnail)
-       if let _ = thumbnailContainer {
-        let imageURL = try thumbnailContainer?.decodeIfPresent(String.self, forKey: .imageURL)
-        self.init(body: body, name: name, tagline: tagline, votesCount: votes!, imageURL: imageURL, day: day, url: url, postID: postID)
-        return
+       let container = try decoder.container(keyedBy: additionalKeys.self)
+        let name = try container.decodeIfPresent(String.self, forKey: .name)
+        let tagline = try container.decodeIfPresent(String.self, forKey: .tagline)
+        let votes = try container.decodeIfPresent(Int.self, forKey: .votes) ?? 0
+        let day  = try container.decodeIfPresent(String.self, forKey: .day)
+        let postID = try container.decode(Int.self, forKey: .postID)
+        let thumbnailContainer = try? container.nestedContainer(keyedBy: Thumbnail.self, forKey: .thumbnail)
+        if let _ = thumbnailContainer {
+            let imageURL = try thumbnailContainer?.decodeIfPresent(String.self, forKey: .imageURL) ?? "No image"
+            self.init(name: name, tagline: tagline, votesCount: votes, imageURL: imageURL, day: day, postID: postID)
+            return
+        
         }
-        self.init(body: body, name: name, tagline: tagline, votesCount: votes!, imageURL: "image", day: day, url: url, postID: postID)
-    }
+        self.init(name: name, tagline: tagline, votesCount: votes, imageURL: "image", day: day, postID: postID)
 }
-
+}
 struct Producthunt: Decodable {
     let comments: [ProductHunt]
 }
@@ -106,7 +97,7 @@ class Network {
         let session = URLSession.shared
         var customizableParamters = "posts"
         let dg = DispatchGroup()
-        var url = URL(string: "https://api.producthunt.com/v1/comments")
+        var url = URL(string: "https://api.producthunt.com/v1/posts")
       
         let date = Date()
 //        guard let currentDate = date else {

@@ -18,6 +18,7 @@
 		1C36E4071F741A420025BBAB /* ProductFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C36E4061F741A420025BBAB /* ProductFeed.swift */; };
 		1C36E4091F743BB00025BBAB /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C36E4081F743BB00025BBAB /* TableViewCell.swift */; };
 		1C588B531F74555800D78AB5 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C588B521F74555800D78AB5 /* Extensions.swift */; };
+		1C7881EA1F7849E6005793D5 /* CommentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1C7881E91F7849E6005793D5 /* CommentRequest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 		1C36E4061F741A420025BBAB /* ProductFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductFeed.swift; sourceTree = "<group>"; };
 		1C36E4081F743BB00025BBAB /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		1C588B521F74555800D78AB5 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		1C7881E91F7849E6005793D5 /* CommentRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRequest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +118,7 @@
 				1C36E4061F741A420025BBAB /* ProductFeed.swift */,
 				1C36E4081F743BB00025BBAB /* TableViewCell.swift */,
 				1C2C914F1F75AE8900858B6D /* Comments.swift */,
+				1C7881E91F7849E6005793D5 /* CommentRequest.swift */,
 			);
 			path = "Product-Hunt-API";
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 				1C36E4091F743BB00025BBAB /* TableViewCell.swift in Sources */,
 				1C36E3DB1F737D2D0025BBAB /* NetworkRequest.swift in Sources */,
 				1C36E3D91F737D2D0025BBAB /* AppDelegate.swift in Sources */,
+				1C7881EA1F7849E6005793D5 /* CommentRequest.swift in Sources */,
 				1C2C91501F75AE8900858B6D /* Comments.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
