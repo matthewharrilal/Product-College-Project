@@ -23,9 +23,7 @@ class ProductHuntFeed: UITableViewController {
         }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        self.tableView.reloadData()
-    }
+ 
     override func viewDidLoad() {
         //        Network.networking { (postz) in
         //            for post in postz {

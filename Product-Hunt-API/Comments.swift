@@ -15,17 +15,37 @@ class Comments: UITableViewController {
     
     var commentsArray: [Comments1] = [] {
         didSet {
-            self.tableView.reloadData()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        prepareSwipe()
     let network1 = CommentsRequest()
         network1.commentsRequest(postID: postID) { (allComments) in
             self.commentsArray = allComments
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+            
         }
         }
+    
+    func prepareSwipe()
+    {
+        let swipeFromBottom = UISwipeGestureRecognizer(target: self, action: #selector(Comments.leftSwiping(_:)))
+        swipeFromBottom.direction = .right
+        view.addGestureRecognizer(swipeFromBottom)
+        
+    }
+    
+    @objc func leftSwiping(_ gesture:UIGestureRecognizer)
+    {
+        self.navigationController?.popViewController(animated: true)
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -33,9 +53,12 @@ class Comments: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         let commentsPath = commentsArray[indexPath.row]
-        cell.textLabel?.text = String(describing: commentsPath.body)
+        cell.textLabel?.text =  commentsPath.body
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return commentsArray.count
+    }
 
 }
