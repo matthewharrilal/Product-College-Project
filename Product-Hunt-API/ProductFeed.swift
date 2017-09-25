@@ -78,7 +78,7 @@ class ProductHuntFeed: UITableViewController {
             DispatchQueue.main.async {
                 
                 cell.imageView?.loadImageUsingCacheWithUrlString(urlString: profileImageURL)
-                
+                cell.layoutIfNeeded()
             }
             
         }
