@@ -59,7 +59,7 @@ class CommentsRequest {
         // And we had to structure the url request such as that in order to be able to use the formatting parameters function as well as desired protocols
         var posts = [Comments1]()
         
-        dg.enter()
+       
         session.dataTask(with: getRequest) { (data, response, error) in
             guard error == nil else{return}
             if let data = data {
@@ -69,16 +69,12 @@ class CommentsRequest {
                 
                 posts = newPosts
                 // print(producthunt)
-                dg.leave()
+               completion(posts)
             } else {
-                dg.leave()
+                
             }
             }.resume()
-        dg.notify(queue: .main, execute:
-            {
-                completion(posts)
-                
-        })
+       
     }
        
     }

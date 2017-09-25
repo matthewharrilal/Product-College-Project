@@ -11,13 +11,15 @@ import UIKit
 
 
 class ProductHuntFeed: UITableViewController {
-//    var posts: String!
+    //    var posts: String!
     
     var products: ProductHunt?
     
     var posts1: [ProductHunt] = [] {
         didSet {
-            self.tableView.reloadData()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     
@@ -30,17 +32,17 @@ class ProductHuntFeed: UITableViewController {
         //                print(post)
         //            }
         //        }
-        DispatchQueue.main.async {
-
-            Network.networking { (gatheredPosts) in
-               
-                self.posts1 = gatheredPosts
+        
+        
+        Network.networking { (gatheredPosts) in
+            self.posts1 = gatheredPosts
+            DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
         }
-        
-        
     }
+    
+    
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return posts1.count
     }
@@ -69,6 +71,7 @@ class ProductHuntFeed: UITableViewController {
         print(product)
         //        print(posts1[indexPath.row])
         if product.name != nil {
+            print(product.name)
             cell.textLabel?.text = product.name
             cell.detailTextLabel?.text = product.tagline
         }
@@ -79,7 +82,7 @@ class ProductHuntFeed: UITableViewController {
                 cell.imageView?.loadImageUsingCacheWithUrlString(urlString: profileImageURL)
                 
             }
-        
+            
         }
         
         //self.tableView.reloadData()

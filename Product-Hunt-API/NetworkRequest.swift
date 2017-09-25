@@ -14,7 +14,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-       
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -37,7 +37,7 @@ struct ProductHunt {
     
     // What is the point of initalizing the data?
     init(name: String?, tagline: String?, votesCount: Int?, imageURL: String?, day: String?, postID: Int) {
-    
+        
         self.name = name
         self.tagline = tagline
         self.votes = votesCount
@@ -52,8 +52,8 @@ extension ProductHunt: Decodable {
     
     enum additionalKeys: String, CodingKey {
         // Creating case statements that are nested within the posts list embedded with dictionaries
-    
-       
+        
+        
         case name
         case tagline
         case votes = "votes"
@@ -65,10 +65,10 @@ extension ProductHunt: Decodable {
     enum Thumbnail: String, CodingKey {
         case imageURL = "image_url"
     }
-   
+    
     
     init(from decoder: Decoder) throws {
-       let container = try decoder.container(keyedBy: additionalKeys.self)
+        let container = try decoder.container(keyedBy: additionalKeys.self)
         let name = try container.decodeIfPresent(String.self, forKey: .name)
         let tagline = try container.decodeIfPresent(String.self, forKey: .tagline)
         let votes = try container.decodeIfPresent(Int.self, forKey: .votes) ?? 0
@@ -79,13 +79,13 @@ extension ProductHunt: Decodable {
             let imageURL = try thumbnailContainer?.decodeIfPresent(String.self, forKey: .imageURL) ?? "No image"
             self.init(name: name, tagline: tagline, votesCount: votes, imageURL: imageURL, day: day, postID: postID)
             return
-        
+            
         }
         self.init(name: name, tagline: tagline, votesCount: votes, imageURL: "image", day: day, postID: postID)
-}
+    }
 }
 struct Producthunt: Decodable {
-    let comments: [ProductHunt]
+    let posts: [ProductHunt]
 }
 
 struct CommentsHunt: Decodable {
@@ -98,18 +98,18 @@ class Network {
         var customizableParamters = "posts"
         let dg = DispatchGroup()
         var url = URL(string: "https://api.producthunt.com/v1/posts")
-      
+        
         let date = Date()
-//        guard let currentDate = date else {
-//            return
-//        }
+        //        guard let currentDate = date else {
+        //            return
+        //        }
         
         let urlParams = ["search[featured]": "true",
                          "scope": "public",
                          "created_at": String(describing: date),
                          "per_page": "20"]
         url = url?.appendingQueryParameters(urlParams)
-       
+        
         var getRequest = URLRequest(url: url!)
         getRequest.httpMethod = "GET"
         getRequest.setValue("Bearer affc40d00605f0df370dbd473350db649b0c88a5747a2474736d81309c7d5f7b ", forHTTPHeaderField: "Authorization")
@@ -121,26 +121,20 @@ class Network {
         // And we had to structure the url request such as that in order to be able to use the formatting parameters function as well as desired protocols
         var posts = [ProductHunt]()
         
-        dg.enter()
+        
         session.dataTask(with: getRequest) { (data, response, error) in
             guard error == nil else{return}
             if let data = data {
                 let producthunt = try? JSONDecoder().decode(Producthunt.self, from: data)
                 
-                guard let newPosts = producthunt?.comments else{return}
-              
+                guard let newPosts = producthunt?.posts else{return}
+                
                 posts = newPosts
-               // print(producthunt)
-                dg.leave()
-            } else {
-                dg.leave()
+                // print(producthunt)
+                completion(posts)
             }
             }.resume()
-        dg.notify(queue: .main, execute:
-            {
-                completion(posts)
-                
-        })
+        
     }
 }
 
