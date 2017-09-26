@@ -26,6 +26,8 @@ class ViewController: UIViewController {
     
 }
 
+let session = URLSession.shared
+
 struct ProductHunt {
     // Modeling the properties we want back from the JSON Data
     var name: String?
@@ -91,8 +93,17 @@ struct Producthunt: Decodable {
 struct CommentsHunt: Decodable {
     let comments: [ProductHunt]
 }
+
+class Singleton {
+    static let sharedSession = URLSession.shared
+    private init() {}
+}
+
+
 class Network {
+
     static func networking(completion: @escaping ([ProductHunt])-> Void) {
+      
         
         let session = URLSession.shared
         var customizableParamters = "posts"
@@ -122,7 +133,7 @@ class Network {
         var posts = [ProductHunt]()
         
         
-        session.dataTask(with: getRequest) { (data, response, error) in
+        Singleton.sharedSession.dataTask(with: getRequest) { (data, response, error) in
             guard error == nil else{return}
             if let data = data {
                 let producthunt = try? JSONDecoder().decode(Producthunt.self, from: data)

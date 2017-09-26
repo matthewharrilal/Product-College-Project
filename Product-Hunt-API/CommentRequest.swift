@@ -60,7 +60,7 @@ class CommentsRequest {
         var posts = [Comments1]()
         
        
-        session.dataTask(with: getRequest) { (data, response, error) in
+        Singleton.sharedSession.dataTask(with: getRequest) { (data, response, error) in
             guard error == nil else{return}
             if let data = data {
                 let producthunt = try? JSONDecoder().decode(ProductHunt1.self, from: data)
