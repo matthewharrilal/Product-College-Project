@@ -102,37 +102,120 @@ class Singleton {
     private init() {}
 }
 
-protocol  NetworkProtocol {
-    func go(decodableObjectEntry: Decodable ,urlParameters: [String: String], completionHandler: (NetworkResponse) -> ())
-}
+//protocol  NetworkProtocol {
+//    func go(decodableObjectEntry: Decodable ,urlParameters: [String: String], completionHandler: (NetworkResponse) -> ())
+//}
+//
+//enum NetworkResponse {
+//    case Success(response: String)
+//    case Failure(error: Error)
+//    // Implementing the case statements for the response of the network when we make our network calls
+//}
+//
+//enum Network: NetworkProtocol {
+//    case GET(url: URL)
+//    func go(decodableObjectEntry: Decodable, urlParameters: [String : String], completionHandler: (NetworkResponse) -> ()) {
+//        switch self {
+//        case .GET(let url):
+//            url.appendingQueryParameters(urlParameters)
+//            var getRequest = URLRequest(url: url)
+//            getRequest.setValue("Bearer affc40d00605f0df370dbd473350db649b0c88a5747a2474736d81309c7d5f7b ", forHTTPHeaderField: "Authorization")
+//            getRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+//            getRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//            getRequest.setValue("api.producthunt.com", forHTTPHeaderField: "Host")
+//            Singleton.sharedSession.dataTask(with: getRequest, completionHandler: { (data, response, error) in
+//                guard error == nil else{return}
+//                if let data = data {
+//                    let producthunt = try? JSONDecoder().decode(decodableObjectEntry, from: data)
+//                }
+//            })
+//        }
+//
+//    }
+//
+//}
 
-enum NetworkResponse {
-    case Success(response: String)
-    case Failure(error: Error)
-    // Implementing the case statements for the response of the network when we make our network calls
-}
+// This is how we should start structuring our networking layer from now on it is cleaner and easier for others that are new to your code to read
 
-enum Network: NetworkProtocol {
-    case GET(url: URL)
-    func go(decodableObjectEntry: Decodable, urlParameters: [String : String], completionHandler: (NetworkResponse) -> ()) {
+
+enum Route {
+    // So essentially what we are doing here is declaring the possible routes that can be taken while making these network requests
+    case posts
+    case comments(postID: Int)
+    
+    // Now that we have the endpoints we are going to use a function to iterate over the posssible endpoints that can be taken therefore the ones we have already declared
+    
+    // and the reason we have to use a switch statement is because we you cant actually implement cases until they are in a switch statement
+    func path() -> String {
         switch self {
-        case .GET(let url):
-            url.appendingQueryParameters(urlParameters)
-            var getRequest = URLRequest(url: url)
-            getRequest.setValue("Bearer affc40d00605f0df370dbd473350db649b0c88a5747a2474736d81309c7d5f7b ", forHTTPHeaderField: "Authorization")
-            getRequest.setValue("application/json", forHTTPHeaderField: "Accept")
-            getRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            getRequest.setValue("api.producthunt.com", forHTTPHeaderField: "Host")
-            Singleton.sharedSession.dataTask(with: getRequest, completionHandler: { (data, response, error) in
-                guard error == nil else{return}
-                if let data = data {
-                    let producthunt = try? JSONDecoder().decode(decodableObjectEntry, from: data)
-                }
-            })
+        case .posts:
+            return "/posts"
+            
+        // Since these are the endpoints of the full url that are attached to the base url we do not have to give the case the specific post id because during this point in time what we are essentially doing is that we are just attaching these endpoints to the base url and not getting the specific post
+        case .comments:
+            return "/comments"
+        }
+    }
+    
+    // But see the reason we are using an enum because we are representing a finite amount of data as well as it contributes to a cleaner network abstraction layer therefore it is better to use
+    func urlHeaders() -> [String: String] {
+        var urlHeaders = ["Authorization": "Bearer affc40d00605f0df370dbd473350db649b0c88a5747a2474736d81309c7d5f7b",
+                          "Accept": "application/json",
+                          "Content-Type": "application,json",
+                          "Host": "api.producthunt.com"]
+        return urlHeaders
+        
+        // The reason this function differs from our url parameter functions is due to the simple reason no matter what endpoint the user decides to see the headers are always the same therefore we can disregard it
+    }
+    
+    func urlParams() -> [String: String] {
+         let date = Date()
+        switch self {
+        case .posts:
+            var postParameters = ["search[featured]": "true",
+                                  "scope": "public",
+                                  "created_at": String(describing: date),
+                                  "per_page": "20"]
+            return postParameters
+            
+    // And the reason that here we have to implement the post id for this comments case is due to we are not concerned with something as benign as the endpoints this is actually when the user decides to go on a specific route and the user is going to need specific parameters to get there
+        case .comments(let postID):
+            var commentsParameters = ["search[post_id]": "\(postID)",
+                                      "scope": "public",
+                                      "created_at": String(describing: date),
+                                      "per_page": "20"]
+            return commentsParameters
+        }
+    }
+}
+
+// In this class this is essentially where we put our network requests and since
+class Networking {
+    
+    static let instance = Networking()
+    // We are always just have to call never create an object off of this class therefore
+    
+    var baseURL: String = "https://api.producthunt.com/v1"
+    
+    // This is the function that determines the path that we are going to be taking of course depending on where the function will be called
+    func fetch(route: Route, completionHandler: @escaping (Data) -> Void) {
+        var fullUrlString = URL(string: baseURL.appending(route.path()))
+        fullUrlString = fullUrlString?.appendingQueryParameters(route.urlParams())
+        
+        // Urls have parameters while url requests have header methods as well as in general https methods
+        
+        var getReuqest = URLRequest(url: fullUrlString!)
+        getReuqest.allHTTPHeaderFields = route.urlHeaders()
+        
+        
+        Singleton.sharedSession.dataTask(with: getReuqest) { (data, response, error) in
+            if let data = data {
+                completionHandler(data)
+            }
         }
         
     }
-    
+ 
 }
 
 
