@@ -29,8 +29,8 @@ struct ProductHunt1: Decodable {
     let comments: [Comments1]
 }
 class CommentsRequest {
-   
-  
+    
+    
     func commentsRequest(postID: Int, completion: @escaping ([Comments1]) -> Void) {
         let session = URLSession.shared
         var customizableParamters = "posts"
@@ -59,7 +59,7 @@ class CommentsRequest {
         // And we had to structure the url request such as that in order to be able to use the formatting parameters function as well as desired protocols
         var posts = [Comments1]()
         
-       
+        
         Singleton.sharedSession.dataTask(with: getRequest) { (data, response, error) in
             guard error == nil else{return}
             if let data = data {
@@ -69,13 +69,13 @@ class CommentsRequest {
                 
                 posts = newPosts
                 // print(producthunt)
-               completion(posts)
+                completion(posts)
             } else {
                 
             }
             }.resume()
-       
+        
     }
-       
-    }
+    
+}
 

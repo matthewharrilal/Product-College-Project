@@ -50,7 +50,9 @@ struct ProductHunt {
 }
 
 extension ProductHunt: Decodable {
-    // Creating  our case statements to iterate over the data in the JSON File
+    enum postsLayer: String, CodingKey {
+        case posts
+    }
     
     enum additionalKeys: String, CodingKey {
         // Creating case statements that are nested within the posts list embedded with dictionaries
@@ -84,6 +86,7 @@ extension ProductHunt: Decodable {
             
         }
         self.init(name: name, tagline: tagline, votesCount: votes, imageURL: "image", day: day, postID: postID)
+        
     }
 }
 struct Producthunt: Decodable {
@@ -99,11 +102,45 @@ class Singleton {
     private init() {}
 }
 
+protocol  NetworkProtocol {
+    func go(decodableObjectEntry: Decodable ,urlParameters: [String: String], completionHandler: (NetworkResponse) -> ())
+}
+
+enum NetworkResponse {
+    case Success(response: String)
+    case Failure(error: Error)
+    // Implementing the case statements for the response of the network when we make our network calls
+}
+
+enum Network: NetworkProtocol {
+    case GET(url: URL)
+    func go(decodableObjectEntry: Decodable, urlParameters: [String : String], completionHandler: (NetworkResponse) -> ()) {
+        switch self {
+        case .GET(let url):
+            url.appendingQueryParameters(urlParameters)
+            var getRequest = URLRequest(url: url)
+            getRequest.setValue("Bearer affc40d00605f0df370dbd473350db649b0c88a5747a2474736d81309c7d5f7b ", forHTTPHeaderField: "Authorization")
+            getRequest.setValue("application/json", forHTTPHeaderField: "Accept")
+            getRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            getRequest.setValue("api.producthunt.com", forHTTPHeaderField: "Host")
+            Singleton.sharedSession.dataTask(with: getRequest, completionHandler: { (data, response, error) in
+                guard error == nil else{return}
+                if let data = data {
+                    let producthunt = try? JSONDecoder().decode(decodableObjectEntry, from: data)
+                }
+            })
+        }
+        
+    }
+    
+}
+
+
 
 class Network {
-
+    
     static func networking(completion: @escaping ([ProductHunt])-> Void) {
-      
+        
         
         let session = URLSession.shared
         var customizableParamters = "posts"
