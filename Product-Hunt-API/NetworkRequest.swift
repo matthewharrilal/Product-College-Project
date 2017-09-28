@@ -102,41 +102,6 @@ class Singleton {
     private init() {}
 }
 
-//protocol  NetworkProtocol {
-//    func go(decodableObjectEntry: Decodable ,urlParameters: [String: String], completionHandler: (NetworkResponse) -> ())
-//}
-//
-//enum NetworkResponse {
-//    case Success(response: String)
-//    case Failure(error: Error)
-//    // Implementing the case statements for the response of the network when we make our network calls
-//}
-//
-//enum Network: NetworkProtocol {
-//    case GET(url: URL)
-//    func go(decodableObjectEntry: Decodable, urlParameters: [String : String], completionHandler: (NetworkResponse) -> ()) {
-//        switch self {
-//        case .GET(let url):
-//            url.appendingQueryParameters(urlParameters)
-//            var getRequest = URLRequest(url: url)
-//            getRequest.setValue("Bearer affc40d00605f0df370dbd473350db649b0c88a5747a2474736d81309c7d5f7b ", forHTTPHeaderField: "Authorization")
-//            getRequest.setValue("application/json", forHTTPHeaderField: "Accept")
-//            getRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//            getRequest.setValue("api.producthunt.com", forHTTPHeaderField: "Host")
-//            Singleton.sharedSession.dataTask(with: getRequest, completionHandler: { (data, response, error) in
-//                guard error == nil else{return}
-//                if let data = data {
-//                    let producthunt = try? JSONDecoder().decode(decodableObjectEntry, from: data)
-//                }
-//            })
-//        }
-//
-//    }
-//
-//}
-
-// This is how we should start structuring our networking layer from now on it is cleaner and easier for others that are new to your code to read
-
 
 enum Route {
     // So essentially what we are doing here is declaring the possible routes that can be taken while making these network requests
@@ -169,7 +134,7 @@ enum Route {
     }
     
     func urlParams() -> [String: String] {
-         let date = Date()
+        let date = Date()
         switch self {
         case .posts:
             var postParameters = ["search[featured]": "true",
@@ -178,12 +143,12 @@ enum Route {
                                   "per_page": "20"]
             return postParameters
             
-    // And the reason that here we have to implement the post id for this comments case is due to we are not concerned with something as benign as the endpoints this is actually when the user decides to go on a specific route and the user is going to need specific parameters to get there
+        // And the reason that here we have to implement the post id for this comments case is due to we are not concerned with something as benign as the endpoints this is actually when the user decides to go on a specific route and the user is going to need specific parameters to get there
         case .comments(let postID):
             var commentsParameters = ["search[post_id]": "\(postID)",
-                                      "scope": "public",
-                                      "created_at": String(describing: date),
-                                      "per_page": "20"]
+                "scope": "public",
+                "created_at": String(describing: date),
+                "per_page": "20"]
             return commentsParameters
         }
     }
@@ -214,68 +179,14 @@ class Networking {
                 
                 print(response)
                 print(error?.localizedDescription)
-              
+                
                 completionHandler(data)
-            }
-        }.resume()
-        
-    }
- 
-}
-
-
-
-class Network {
-    
-    static func networking(completion: @escaping ([ProductHunt])-> Void) {
-        
-        
-        let session = URLSession.shared
-        var customizableParamters = "posts"
-        let dg = DispatchGroup()
-        var url = URL(string: "https://api.producthunt.com/v1/posts")
-        
-        let date = Date()
-        //        guard let currentDate = date else {
-        //            return
-        //        }
-        
-        let urlParams = ["search[featured]": "true",
-                         "scope": "public",
-                         "created_at": String(describing: date),
-                         "per_page": "20"]
-        url = url?.appendingQueryParameters(urlParams)
-        
-        var getRequest = URLRequest(url: url!)
-        getRequest.httpMethod = "GET"
-        getRequest.setValue("Bearer affc40d00605f0df370dbd473350db649b0c88a5747a2474736d81309c7d5f7b ", forHTTPHeaderField: "Authorization")
-        getRequest.setValue("application/json", forHTTPHeaderField: "Accept")
-        getRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        getRequest.setValue("api.producthunt.com", forHTTPHeaderField: "Host")
-        // Formatting the network request with the neccesary headers by using the set value methods
-        
-        // And we had to structure the url request such as that in order to be able to use the formatting parameters function as well as desired protocols
-        var posts = [ProductHunt]()
-        
-        
-        Singleton.sharedSession.dataTask(with: getRequest) { (data, response, error) in
-            guard error == nil else{return}
-            if let data = data {
-                let producthunt = try? JSONDecoder().decode(Producthunt.self, from: data)
-                
-                guard let newPosts = producthunt?.posts else{return}
-                
-                posts = newPosts
-                // print(producthunt)
-                completion(posts)
             }
             }.resume()
         
     }
+    
 }
-
-
-// We are essentially giving the ability to implement parameters in the dictionary succesfully
 
 extension URL {
     func appendingQueryParameters(_ parametersDictionary : Dictionary<String, String>) -> URL {
