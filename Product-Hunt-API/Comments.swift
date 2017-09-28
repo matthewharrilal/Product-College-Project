@@ -24,15 +24,25 @@ class Comments: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         prepareSwipe()
-    let network1 = CommentsRequest()
-        network1.commentsRequest(postID: postID) { (allComments) in
-            self.commentsArray = allComments
+      //  let network1 = CommentsRequest()
+//        network1.commentsRequest(postID: postID) { (allComments) in
+//            self.commentsArray = allComments
+//            DispatchQueue.main.async {
+//                self.tableView.reloadData()
+//            }
+//
+//        }
+//
+        let networkingInstance = Networking()
+        networkingInstance.fetch(route: Route.comments(postID: postID)) { (allComments) in
+            let commentsHunt = try? JSONDecoder().decode(ProductHunt1.self, from: allComments)
+            guard let newComments = commentsHunt?.comments else{return}
+            self.commentsArray = newComments
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
-            
         }
-        }
+    }
     
     func prepareSwipe()
     {
@@ -60,5 +70,5 @@ class Comments: UITableViewController {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return commentsArray.count
     }
-
+    
 }

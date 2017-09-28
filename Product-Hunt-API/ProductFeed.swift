@@ -31,13 +31,27 @@ class ProductHuntFeed: UITableViewController {
         //            }
         //        }
         
+//
+//        Network.networking { (gatheredPosts) in
+//            self.posts1 = gatheredPosts
+//            DispatchQueue.main.async {
+//                self.tableView.reloadData()
+//            }
+//        }
         
-        Network.networking { (gatheredPosts) in
-            self.posts1 = gatheredPosts
+   let network1 = Networking()
+        network1.fetch(route: Route.posts) { (allPosts) in
+            
+            let producthunt = try? JSONDecoder().decode(Producthunt.self, from: allPosts)
+            print(producthunt)
+            
+            guard let newPosts = producthunt?.posts else{return}
+            self.posts1 = newPosts
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
         }
+     
     }
     
     

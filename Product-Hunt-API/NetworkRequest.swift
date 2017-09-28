@@ -198,9 +198,10 @@ class Networking {
     var baseURL: String = "https://api.producthunt.com/v1"
     
     // This is the function that determines the path that we are going to be taking of course depending on where the function will be called
-    func fetch(route: Route, completionHandler: @escaping (Data) -> Void) {
+    func fetch(route: Route,completionHandler: @escaping (Data) -> Void) {
         var fullUrlString = URL(string: baseURL.appending(route.path()))
         fullUrlString = fullUrlString?.appendingQueryParameters(route.urlParams())
+        
         
         // Urls have parameters while url requests have header methods as well as in general https methods
         
@@ -210,9 +211,13 @@ class Networking {
         
         Singleton.sharedSession.dataTask(with: getReuqest) { (data, response, error) in
             if let data = data {
+                
+                print(response)
+                print(error?.localizedDescription)
+              
                 completionHandler(data)
             }
-        }
+        }.resume()
         
     }
  
