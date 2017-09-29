@@ -23,23 +23,9 @@ class ProductHuntFeed: UITableViewController {
         }
     }
     
- 
+    
     override func viewDidLoad() {
-        //        Network.networking { (postz) in
-        //            for post in postz {
-        //                print(post)
-        //            }
-        //        }
-        
-//
-//        Network.networking { (gatheredPosts) in
-//            self.posts1 = gatheredPosts
-//            DispatchQueue.main.async {
-//                self.tableView.reloadData()
-//            }
-//        }
-        
-   let network1 = Networking()
+        let network1 = Networking()
         network1.fetch(route: Route.posts) { (allPosts) in
             
             let producthunt = try? JSONDecoder().decode(Producthunt.self, from: allPosts)
@@ -51,7 +37,7 @@ class ProductHuntFeed: UITableViewController {
                 self.tableView.reloadData()
             }
         }
-     
+        
     }
     
     
@@ -88,16 +74,12 @@ class ProductHuntFeed: UITableViewController {
             cell.detailTextLabel?.text = product.tagline
         }
         if let profileImageURL = product.imageURL {
-            
             DispatchQueue.main.async {
-                
                 cell.imageView?.loadImageUsingCacheWithUrlString(urlString: profileImageURL)
                 cell.layoutIfNeeded()
             }
             
         }
-        
-        //self.tableView.reloadData()
         return cell
     }
     
